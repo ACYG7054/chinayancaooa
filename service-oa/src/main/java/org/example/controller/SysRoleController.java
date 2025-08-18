@@ -10,12 +10,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.model.system.SysRole;
 import org.example.result.Result;
 import org.example.service.SysRoleService;
+import org.example.vo.system.AssginRoleVo;
 import org.example.vo.system.SysRoleQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "角色管理")
 @RestController
@@ -87,6 +89,20 @@ public class SysRoleController {
     @DeleteMapping("batchRemove")
     public Result batchRemove(@RequestBody List<Long> idList) {
         sysRoleService.removeByIds(idList);
+        return Result.ok();
+    }
+
+    @ApiOperation(value = "根据用户获取角色数据")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId) {
+        Map<String, Object> roleMap = sysRoleService.findRoleByUserId(userId);
+        return Result.ok(roleMap);
+    }
+
+    @ApiOperation(value = "根据用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
         return Result.ok();
     }
 }
