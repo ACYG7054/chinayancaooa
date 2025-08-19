@@ -17,7 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class SysUserController {
 
     @Autowired
-    private SysUserService service;
+    private SysUserService sysUserService;
+
+    @ApiOperation(value = "更新状态")
+    @GetMapping("updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id, @PathVariable Integer status) {
+        sysUserService.updateStatus(id, status);
+        return Result.ok();
+    }
 
     //用户条件分页查询
     @ApiOperation("用户条件分页查询")
@@ -49,35 +56,35 @@ public class SysUserController {
         }
 
         //调用mp的方法实现条件分页查询
-        IPage<SysUser> pageModel = service.page(pageParam, wrapper);
+        IPage<SysUser> pageModel = sysUserService.page(pageParam, wrapper);
         return Result.ok(pageModel);
     }
 
     @ApiOperation(value = "获取用户")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
-        SysUser user = service.getById(id);
+        SysUser user = sysUserService.getById(id);
         return Result.ok(user);
     }
 
     @ApiOperation(value = "保存用户")
     @PostMapping("save")
     public Result save(@RequestBody SysUser user) {
-        service.save(user);
+        sysUserService.save(user);
         return Result.ok();
     }
 
     @ApiOperation(value = "更新用户")
     @PutMapping("update")
     public Result updateById(@RequestBody SysUser user) {
-        service.updateById(user);
+        sysUserService.updateById(user);
         return Result.ok();
     }
 
     @ApiOperation(value = "删除用户")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
-        service.removeById(id);
+        sysUserService.removeById(id);
         return Result.ok();
     }
 }
