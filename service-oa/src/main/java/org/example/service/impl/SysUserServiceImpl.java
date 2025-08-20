@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,5 +24,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUser.setStatus(0);
         }
         this.updateById(sysUser);
+    }
+    @Override
+    public SysUser getByUsername(String username) {
+        return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
     }
 }
