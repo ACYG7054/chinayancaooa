@@ -33,4 +33,11 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     List<RouterVo> findUserMenuList(Long userId);
+
+    /**
+     * 获取用户按钮权限
+     * @param userId
+     * @return
+     */
+    List<String> findUserPermsList(Long userId);
 }

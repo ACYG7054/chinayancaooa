@@ -12,6 +12,7 @@ import org.example.vo.system.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,16 +50,11 @@ public class IndexController {
         return Result.ok(map);
     }
 
-    /**
-     * 获取用户信息
-     * @return
-     */
+    @ApiOperation(value = "获取用户信息")
     @GetMapping("info")
-    public Result info() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("roles","[admin]");
-        map.put("name","admin");
-        map.put("avatar","https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg");
+    public Result info(HttpServletRequest request) {
+        String username = JwtHelper.getUsername(request.getHeader("token"));
+        Map<String, Object> map = sysUserService.getUserInfo(username);
         return Result.ok(map);
     }
     /**

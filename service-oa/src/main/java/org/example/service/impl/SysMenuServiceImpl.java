@@ -159,4 +159,17 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         return routerPath;
     }
+
+    @Override
+    public List<String> findUserPermsList(Long userId) {
+        //超级管理员admin账号id为：1
+        List<SysMenu> sysMenuList = null;
+        if (userId.longValue() == 1) {
+            sysMenuList = this.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus, 1));
+        } else {
+            sysMenuList = sysMenuMapper.findListByUserId(userId);
+        }
+        List<String> permsList = sysMenuList.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
+        return permsList;
+    }
 }
